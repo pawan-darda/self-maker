@@ -35,17 +35,30 @@ def copy_random_files():
 
     for iter in range(count):
 
-        src_files_path = onlyfiles[random.randint(1,count_files)]
-        dest_file_path = src_files_path.replace(SOURCE,DEST)
-
+        src_file_path = onlyfiles[random.randint(1,count_files)]
+        dest_file_path = src_file_path.replace(SOURCE,DEST)
+        print src_file_path
+        print dest_file_path
         relative_dest_path = dest_file_path.split(DEST)[1]
-        repo_name = relative_dest_path.split(os.path.sep)[0]
-
+        file_items = relative_dest_path.split(os.path.sep)
+        repo_name = file_items[0]
+        file_name = file_items[-1]
         repo_path = SOURCE + repo_name
         print repo_path
 
-        if os.path.isfile (src_files_path): print "Success"
-        # shutil.copy (filename1, filename2)
+        if os.path.isfile (dest_file_path):
+            print "Skipping"
+            continue
+
+        message = ''
+        if file_name.endswith("js"):
+            message = "Adding %s Javascript file to %s repo" %(file_name, repo_name)
+        elif file_name.endswith("py"):
+            message = "Python module %s added to repo %s" %(file_name, repo_name)
+
+        print message
+        #shutil.copy (filename1, filename2)
+        #subprocess.call(["sh", GITCMD, ".", message])
 
     subprocess.call(["sh", GITCMD, ".", "Adding random generator"])
 

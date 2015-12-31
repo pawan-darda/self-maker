@@ -20,18 +20,21 @@ def init_repos():
         if not repo1.bare:
             repo_list.append(repo1)
 
-def copy_random_files():
+def select_copy_files(debug=False):
 
     onlyfiles = []
+
+    if debug : print "In Debug Mode"
 
     for root, directories, filenames in os.walk(SOURCE):
         for filename in filenames:
             onlyfiles.append(os.path.join(root,filename))
 
     count_files = len(onlyfiles) - 10
-    count = random.randint(3,10)
+    count = random.randint(1,10)
 
-    print count_files
+    print "Total Files : %s" % count_files
+    print "Total Commits : %s" % count
 
     for iter in range(count):
 
@@ -41,6 +44,7 @@ def copy_random_files():
         print "Processing File "
         print "%s" %(dest_file_path)
         if not (src_file_path or dest_file_path):
+            print "Source/Dest file path not found"
             continue
 
         relative_dest_path = dest_file_path.split(DEST)[1]
@@ -63,6 +67,10 @@ def copy_random_files():
         elif file_name.endswith("png") or file_name.endswith("jpg") or file_name.endswith("jpeg") :
             message = "Pushing New Assests"
 
+        if debug :
+            print message
+            continue
+
         if not os.path.exists(os.path.dirname(dest_file_path)):
             os.makedirs(os.path.dirname(dest_file_path))
 
@@ -80,7 +88,8 @@ def copy_random_files():
         print "Done \n"
 
 def automate():
-    copy_random_files()
+    debug = True
+    select_copy_files(debug)
     return
 
 if __name__ == "__main__":
